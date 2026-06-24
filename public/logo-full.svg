@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" width="240" height="48">
+  <defs>
+    <linearGradient id="sonicTealGradFull" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00e5b0" />
+      <stop offset="100%" stop-color="#00c896" />
+    </linearGradient>
+  </defs>
+  
+  <g transform="translate(4, 4.8) scale(0.6)">
+    <!-- Headphones Arc -->
+    <path d="M 14 36 A 18 18 0 0 1 50 36" fill="none" stroke="url(#sonicTealGradFull)" stroke-width="5" stroke-linecap="round" />
+    <!-- Left Earcup -->
+    <rect x="9" y="32" width="10" height="18" rx="5" fill="url(#sonicTealGradFull)" />
+    <!-- Right Earcup -->
+    <rect x="45" y="32" width="10" height="18" rx="5" fill="url(#sonicTealGradFull)" />
+    <!-- Flowing Waveform -->
+    <rect x="22" y="28" width="4" height="16" rx="2" fill="url(#sonicTealGradFull)" />
+    <rect x="30" y="20" width="4" height="24" rx="2" fill="url(#sonicTealGradFull)" />
+    <rect x="38" y="24" width="4" height="20" rx="2" fill="url(#sonicTealGradFull)" />
+  </g>
+
+  <!-- Wordmark -->
+  <text x="52" y="33" font-family="'Inter', 'Segoe UI', sans-serif" font-size="20" font-weight="700" fill="#ffffff" letter-spacing="0.15em">SONICEXTRACT</text>
+</svg>

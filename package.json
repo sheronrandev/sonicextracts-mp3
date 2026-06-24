@@ -1,0 +1,19 @@
+{
+  "name": "yt-audio-downloader",
+  "version": "1.0.0",
+  "description": "Production-quality YouTube to MP3 web application",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "axios": "^1.18.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.5.2",
+    "sharp": "^0.34.5"
+  }
+}

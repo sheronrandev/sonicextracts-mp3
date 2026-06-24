@@ -1,0 +1,72 @@
+{
+  "videoFormats": [
+    {
+      "height": 144,
+      "ext": "mp4",
+      "vcodec": "avc1.4D400B",
+      "totalSizeApprox": 309288
+    },
+    {
+      "height": 144,
+      "ext": "mp4",
+      "vcodec": "avc1.4d400b",
+      "size": 195278,
+      "totalSizeApprox": 504566
+    },
+    {
+      "height": 144,
+      "ext": "webm",
+      "vcodec": "vp9",
+      "size": 185292,
+      "totalSizeApprox": 494580
+    },
+    {
+      "height": 240,
+      "ext": "mp4",
+      "vcodec": "avc1.4D400C",
+      "totalSizeApprox": 309288
+    },
+    {
+      "height": 240,
+      "ext": "mp4",
+      "vcodec": "avc1.4D400C",
+      "totalSizeApprox": 309288
+    },
+    {
+      "height": 240,
+      "ext": "mp4",
+      "vcodec": "avc1.4d400c",
+      "size": 322379,
+      "totalSizeApprox": 631667
+    },
+    {
+      "height": 240,
+      "ext": "mp4",
+      "vcodec": "avc1.4d400c",
+      "size": 433081,
+      "totalSizeApprox": 742369
+    },
+    {
+      "height": 240,
+      "ext": "mp4",
+      "vcodec": "avc1.42001E",
+      "size": 635110,
+      "totalSizeApprox": 944398
+    },
+    {
+      "height": 240,
+      "ext": "webm",
+      "vcodec": "vp9",
+      "size": 293080,
+      "totalSizeApprox": 602368
+    },
+    {
+      "height": 240,
+      "ext": "mp4",
+      "vcodec": "av01.0.00M.08.0.110.05.01.06.0",
+      "size": 223779,
+      "totalSizeApprox": 533067
+    }
+  ],
+  "audioSize": 309288
+}

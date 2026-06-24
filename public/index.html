@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>SonicExtract</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link href="style.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Geist:wght@400;600&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#272a33",
+            "on-primary": "#002d6f",
+            "secondary-container": "#7701d0",
+            "on-tertiary-container": "#4f1700",
+            "error-container": "#93000a",
+            "surface-variant": "#32353e",
+            "surface-container-low": "#181b24",
+            "surface-container": "#1c1f28",
+            "on-error-container": "#ffdad6",
+            "secondary-fixed-dim": "#dcb8ff",
+            "on-secondary-container": "#dcb7ff",
+            "surface-bright": "#363942",
+            "on-tertiary": "#5a1c00",
+            "on-primary-fixed-variant": "#00429c",
+            "on-tertiary-fixed": "#370e00",
+            "tertiary": "#ffb599",
+            "surface": "#10131b",
+            "on-secondary-fixed": "#2c0051",
+            "surface-container-lowest": "#0b0e16",
+            "on-surface-variant": "#c2c6d8",
+            "inverse-primary": "#0058cb",
+            "inverse-on-surface": "#2d3039",
+            "on-secondary": "#480081",
+            "primary-fixed-dim": "#b0c6ff",
+            "surface-tint": "#b0c6ff",
+            "on-primary-container": "#002661",
+            "primary-fixed": "#d9e2ff",
+            "on-error": "#690005",
+            "background": "#10131b",
+            "tertiary-container": "#f36420",
+            "primary": "#b0c6ff",
+            "on-surface": "#e0e2ee",
+            "error": "#ffb4ab",
+            "tertiary-fixed": "#ffdbce",
+            "outline-variant": "#424655",
+            "on-tertiary-fixed-variant": "#7f2b00",
+            "on-secondary-fixed-variant": "#6700b5",
+            "on-primary-fixed": "#001945",
+            "on-background": "#e0e2ee",
+            "outline": "#8c90a1",
+            "surface-container-highest": "#32353e",
+            "secondary-fixed": "#efdbff",
+            "secondary": "#dcb8ff",
+            "inverse-surface": "#e0e2ee",
+            "tertiary-fixed-dim": "#ffb599",
+            "surface-dim": "#10131b",
+            "primary-container": "#568dff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "xs": "0.5rem",
+            "sm": "1rem",
+            "unit": "4px",
+            "lg": "2.5rem",
+            "gutter": "24px",
+            "container-max": "1200px",
+            "xl": "4rem",
+            "md": "1.5rem"
+          },
+          "fontFamily": {
+            "label-caps": ["Geist"],
+            "mono-data": ["Geist"],
+            "display-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-main": ["Inter"]
+          },
+          "fontSize": {
+            "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "mono-data": ["14px", { "lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "400" }],
+            "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-main": ["16px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --primary: #00b88f;
+      --warning: #f59e0b;
+      --success: #10b981;
+    }
+
+    body {
+      background-color: #10131b;
+      overflow-x: hidden;
+    }
+
+    .atmospheric-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .blob-1 {
+      position: absolute;
+      top: -10%;
+      left: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(0, 184, 143, 0.15) 0%, transparent 70%);
+      filter: blur(80px);
+    }
+
+    .blob-2 {
+      position: absolute;
+      bottom: -10%;
+      right: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(0, 133, 103, 0.12) 0%, transparent 70%);
+      filter: blur(80px);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(30px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .glass-input:focus-within {
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 184, 143, 0.3);
+      border-color: rgba(0, 184, 143, 0.5);
+    }
+
+    .accent-gradient-btn {
+      background: linear-gradient(135deg, #00b88f 0%, #008567 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .accent-gradient-btn:hover {
+      box-shadow: 0 0 25px rgba(0, 184, 143, 0.4);
+      transform: scale(1.02);
+    }
+
+    .waveform-bar {
+      width: 3px;
+      background: #00b88f;
+      border-radius: 99px;
+      opacity: 0.6;
+    }
+
+    .progress-pulse {
+      box-shadow: 0 0 15px rgba(0, 184, 143, 0.5);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ── Playlist UI ─────────────────────────── */
+    .playlist-track-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+      transition: all 0.3s ease;
+    }
+    .playlist-track-card:hover { background: rgba(255,255,255,0.05); }
+    .playlist-track-card.deselected {
+      opacity: 0.35;
+      filter: grayscale(0.7);
+    }
+    .playlist-track-card.deselected .track-title { text-decoration: line-through; }
+    .playlist-track-card .track-thumb {
+      width: 52px; height: 52px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #272a33;
+    }
+    .track-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: #8c90a1;
+      min-width: 22px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .track-title {
+      font-weight: 600;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #e0e2ee;
+    }
+    .track-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .badge-queued   { background: rgba(140,144,161,0.15); color: #8c90a1; }
+    .badge-downloading { background: rgba(0,184,143,0.15); color: #00b88f; animation: badgePulse 1.5s infinite; }
+    .badge-converting  { background: rgba(245,158,11,0.15); color: #f59e0b; animation: badgePulse 1.5s infinite; }
+    .badge-done    { background: rgba(16,185,129,0.15); color: #10b981; }
+    .badge-failed  { background: rgba(255,180,171,0.15); color: #ffb4ab; }
+
+    @keyframes badgePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
+
+    .playlist-overall-bar {
+      height: 6px;
+      border-radius: 99px;
+      background: #272a33;
+      overflow: hidden;
+    }
+    .playlist-overall-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #00b88f, #008567);
+      transition: width 0.6s cubic-bezier(.4,0,.2,1);
+    }
+
+    .pl-mode-btn {
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: #e0e2ee;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pl-mode-btn:hover {
+      background: rgba(0,184,143,0.12);
+      border-color: rgba(0,184,143,0.3);
+      color: #00b88f;
+    }
+    .pl-mode-btn.active-mode {
+      background: linear-gradient(135deg, #00b88f 0%, #008567 100%);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(0,184,143,0.3);
+    }
+
+    .track-checkbox {
+      width: 18px; height: 18px;
+      accent-color: #00b88f;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .playlist-queue {
+      max-height: 420px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #424655 transparent;
+    }
+    .playlist-queue::-webkit-scrollbar { width: 5px; }
+    .playlist-queue::-webkit-scrollbar-track { background: transparent; }
+    .playlist-queue::-webkit-scrollbar-thumb { background: #424655; border-radius: 99px; }
+  </style>
+</head>
+
+<body class="font-body-main text-on-surface">
+  <!-- Atmospheric Background Layers -->
+  <div class="atmospheric-bg">
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+  </div>
+  <!-- Top Navigation -->
+  <header
+    class="fixed top-0 w-full z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20_rgba(0,112,255,0.1)]">
+    <nav
+      class="max-w-container-max mx-auto px-gutter py-4 flex flex-col md:flex-row justify-between items-center gap-sm md:gap-0">
+      <div class="flex items-center w-full justify-center md:w-auto md:justify-start">
+        <img src="logo-full.svg" alt="SonicExtract" class="h-8 sm:h-10 w-auto object-contain" />
+      </div>
+      <div class="flex items-center gap-sm md:gap-lg flex-wrap justify-center">
+        <!-- NexusGrid Seal -->
+        <div class="flex items-center gap-2 bg-surface-container-high/50 px-3 py-1.5 rounded-full border border-[#00b88f]/30 shadow-[0_0_15px_rgba(0,184,143,0.2)]">
+          <img src="nexusgrid-logo.png" alt="NexusGrid Logo" class="w-5 h-5 object-contain" />
+          <div class="flex flex-col">
+            <span class="text-[8px] font-bold tracking-widest text-[#00b88f]/80 leading-none mb-[2px]">POWERED BY</span>
+            <span class="text-[12px] font-bold tracking-widest text-[#00b88f] leading-none">NEXUSGRID</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main class="pt-32 pb-xl px-gutter max-w-container-max mx-auto">
+    <!-- Platform Tab Bar -->
+    <nav class="platform-tab-bar" aria-label="Platform selector">
+      <button class="platform-tab active" data-platform="youtube" onclick="switchTab('youtube')">
+        <span class="tab-icon">▶️</span>
+        <span class="tab-label">YouTube</span>
+      </button>
+      <button class="platform-tab" data-platform="facebook" onclick="switchTab('facebook')">
+        <span class="tab-icon">📘</span>
+        <span class="tab-label">Facebook</span>
+      </button>
+      <button class="platform-tab" data-platform="instagram" onclick="switchTab('instagram')">
+        <span class="tab-icon">📸</span>
+        <span class="tab-label">Instagram</span>
+      </button>
+      <button class="platform-tab" data-platform="tiktok" onclick="switchTab('tiktok')">
+        <span class="tab-icon">🎵</span>
+        <span class="tab-label">TikTok</span>
+      </button>
+    </nav>
+
+    <!-- ══ YouTube Panel ══════════════════════════════ -->
+    <div id="youtube-panel" class="platform-panel">
+    <!-- Hero Section & URL Input -->
+    <section class="flex flex-col items-center text-center mb-xl">
+      <h1 class="font-display-lg text-display-lg mb-sm">Studio-Grade Audio Extraction</h1>
+      <p class="text-on-surface-variant max-w-2xl mb-lg">Unlock high-fidelity sound from any video source. Powered by
+        our proprietary digital frequency reconstruction engine.</p>
+      <div
+        class="w-full max-w-3xl glass-card p-sm rounded-xl flex flex-col md:flex-row items-stretch md:items-center gap-sm">
+        <div class="flex-grow flex items-center glass-input rounded-lg px-md py-3 w-full">
+          <span class="material-symbols-outlined text-outline-variant mr-3" data-icon="link">link</span>
+          <input id="urlInput"
+            class="bg-transparent border-none focus:ring-0 w-full text-on-surface placeholder:text-[#E0E0E0] min-w-0"
+            placeholder="Paste video or playlist URL here" type="text" />
+        </div>
+        <button id="fetchBtn"
+          class="accent-gradient-btn px-lg py-3 rounded-lg font-label-caps text-label-caps text-white flex justify-center items-center gap-xs w-full md:w-auto flex-shrink-0">
+          CONVERT TO MP3
+          <span class="material-symbols-outlined text-sm" data-icon="bolt" data-weight="fill"
+            style="font-variation-settings: 'FILL' 1;">bolt</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Error Msg -->
+    <div id="errorMsg"
+      class="max-w-3xl mx-auto text-error text-center mb-md border border-error p-3 rounded-lg bg-[rgba(239,68,68,0.1)] hidden">
+    </div>
+
+    <!-- Preview Card -->
+    <section id="previewCard" class="max-w-3xl mx-auto mb-xl hidden">
+      <div class="glass-card p-md rounded-xl flex flex-col md:flex-row items-center gap-md mb-4">
+        <img id="thumb" class="w-full md:w-48 rounded-lg object-cover" src="" />
+        <div class="flex-grow min-w-0 w-full">
+          <h5 id="title" class="font-bold truncate text-on-surface mb-1"></h5>
+          <p id="channel" class="text-on-surface-variant text-sm mb-2"></p>
+          <div class="flex flex-wrap items-center gap-md">
+            <span class="font-mono-data text-mono-data text-on-surface-variant flex items-center gap-xs">
+              <span class="material-symbols-outlined text-xs" data-icon="schedule">schedule</span> <span
+                id="duration"></span>
+            </span>
+            <p id="warningMsg" class="text-error text-xs hidden">Warning: Videos >10m may take a while.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Download Options Panel -->
+      <div id="downloadOptionsPanel" class="glass-card p-md rounded-xl transition-all duration-300 transform translate-y-0 opacity-100">
+        <!-- Type Selection -->
+        <div class="flex justify-center mb-md">
+           <div class="flex bg-surface-container-high rounded-full p-1 border border-white/10">
+             <button id="typeAudioBtn" class="px-6 py-2 rounded-full font-label-caps text-label-caps bg-[#00b88f] text-white shadow-[0_0_15px_rgba(0,184,143,0.3)] transition-all">🎵 AUDIO</button>
+             <button id="typeVideoBtn" class="px-6 py-2 rounded-full font-label-caps text-label-caps text-on-surface-variant hover:text-white transition-all">🎬 VIDEO</button>
+           </div>
+        </div>
+
+        <!-- Format Options -->
+        <div class="mb-md">
+          <p class="font-label-caps text-label-caps text-[#00b88f] mb-3">1. FORMAT</p>
+          <div id="formatGrid" class="grid grid-cols-2 md:grid-cols-3 gap-2">
+             <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Quality Options -->
+        <div class="mb-lg">
+          <p class="font-label-caps text-label-caps text-[#00b88f] mb-3">2. QUALITY</p>
+          <div id="qualityGrid" class="flex flex-wrap gap-2">
+             <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <button id="confirmDownloadBtn" disabled class="w-full accent-gradient-btn py-3 rounded-lg font-label-caps text-label-caps text-white disabled:opacity-50 disabled:grayscale transition-all shadow-lg hover:shadow-xl">
+          DOWNLOAD SELECTED FORMAT
+        </button>
+      </div>
+    </section>
+
+    <!-- Progress Section -->
+    <section id="progressSection" class="max-w-3xl mx-auto mb-xl hidden">
+      <div class="glass-card p-md rounded-xl relative overflow-hidden">
+        <div class="flex justify-between items-end mb-xs">
+          <div class="flex items-center gap-4">
+            <img id="progressLogo" src="logo-icon.svg" alt="Progress Logo" class="w-10 h-10" />
+            <div>
+              <p class="font-label-caps text-label-caps text-[#00e5b0] mb-1">CURRENT TASK</p>
+              <h3 id="statusText" class="font-headline-md text-headline-md">Initializing...</h3>
+            </div>
+          </div>
+          <span id="progressPercent" class="font-mono-data text-mono-data text-[#00b88f]"></span>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+          <div id="progressBar" class="h-full bg-[#009f7b] progress-pulse transition-all duration-300"
+            style="width: 0%"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ Playlist Section ══════════════════════════════ -->
+    <section id="playlistSection" class="max-w-3xl mx-auto mb-xl hidden">
+      <!-- Playlist Cap Warning -->
+      <div id="playlistCapWarning" class="text-center mb-md border border-[#f59e0b] p-3 rounded-lg bg-[rgba(245,158,11,0.08)] hidden">
+        <span class="material-symbols-outlined text-[#f59e0b] text-sm align-middle mr-1">warning</span>
+        <span class="text-[#f59e0b] text-sm" id="playlistCapText"></span>
+      </div>
+
+      <!-- Queue Header -->
+      <div class="glass-card p-md rounded-xl mb-sm">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-sm mb-md">
+          <div>
+            <p class="font-label-caps text-label-caps text-[#00b88f] mb-1">PLAYLIST QUEUE</p>
+            <h3 class="font-headline-md text-headline-md" id="playlistTitle">Loading tracks...</h3>
+          </div>
+          <div class="flex gap-xs">
+            <button id="plSelectAll" class="text-xs text-[#00b88f] border border-[#00b88f]/20 px-3 py-1.5 rounded-lg hover:bg-[#00b88f]/10 transition-colors">Select All</button>
+            <button id="plSelectNone" class="text-xs text-on-surface-variant border border-white/10 px-3 py-1.5 rounded-lg hover:bg-white/5 transition-colors">Deselect All</button>
+          </div>
+        </div>
+        <!-- Track list -->
+        <div id="playlistQueue" class="playlist-queue space-y-1.5 mb-md"></div>
+        <!-- Selected count -->
+        <p class="text-on-surface-variant text-xs mt-2" id="plSelectedCount"></p>
+      </div>
+
+      <!-- Download Mode Buttons -->
+      <div id="plModeButtons" class="flex flex-col sm:flex-row gap-sm mb-sm hidden">
+        <button id="plDownloadZip" class="pl-mode-btn flex-1 justify-center">
+          <span class="material-symbols-outlined text-sm">folder_zip</span> Download as ZIP
+        </button>
+        <button id="plDownloadIndividual" class="pl-mode-btn flex-1 justify-center">
+          <span class="material-symbols-outlined text-sm">download</span> Download Individually
+        </button>
+      </div>
+
+      <!-- Overall Progress (shown during processing) -->
+      <div id="plOverallProgress" class="glass-card p-md rounded-xl hidden">
+        <div class="flex justify-between items-center mb-xs">
+          <div>
+            <p class="font-label-caps text-label-caps text-[#00b88f] mb-1">OVERALL PROGRESS</p>
+            <h3 id="plOverallText" class="font-headline-md text-headline-md">Processing...</h3>
+          </div>
+          <span id="plOverallPercent" class="font-mono-data text-mono-data text-[#00b88f]"></span>
+        </div>
+        <div class="playlist-overall-bar">
+          <div id="plOverallFill" class="playlist-overall-fill" style="width:0%"></div>
+        </div>
+        <p id="plOverallRemaining" class="text-on-surface-variant text-xs mt-2"></p>
+      </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section class="mb-xl">
+      <div class="text-center mb-lg">
+        <h2 class="font-headline-md text-headline-md">High-Performance Workflow</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+        <!-- Step 1 -->
+        <div class="glass-card p-lg rounded-xl text-center flex flex-col items-center">
+          <div
+            class="w-16 h-16 rounded-full bg-[#00b88f]/10 border border-[#00b88f]/20 flex items-center justify-center mb-md">
+            <span class="material-symbols-outlined text-[#00b88f] text-3xl" data-icon="content_paste">content_paste</span>
+          </div>
+          <h4 class="font-headline-md text-headline-md mb-xs">Paste Link</h4>
+          <p class="text-on-surface-variant text-sm">Simply copy any video URL from supported platforms and drop it into
+            our extraction engine.</p>
+        </div>
+        <!-- Step 2 -->
+        <div class="glass-card p-lg rounded-xl text-center flex flex-col items-center">
+          <div
+            class="w-16 h-16 rounded-full bg-[#009f7b]/10 border border-[#009f7b]/20 flex items-center justify-center mb-md">
+            <span class="material-symbols-outlined text-[#009f7b] text-3xl" data-icon="monitoring">monitoring</span>
+          </div>
+          <h4 class="font-headline-md text-headline-md mb-xs">Analyze</h4>
+          <p class="text-on-surface-variant text-sm">Our neural engine isolates the audio stream, performing
+            phase-correction and noise reduction automatically.</p>
+        </div>
+        <!-- Step 3 -->
+        <div class="glass-card p-lg rounded-xl text-center flex flex-col items-center">
+          <div
+            class="w-16 h-16 rounded-full bg-[#008567]/10 border border-[#008567]/20 flex items-center justify-center mb-md">
+            <span class="material-symbols-outlined text-[#008567] text-3xl"
+              data-icon="download_for_offline">download_for_offline</span>
+          </div>
+          <h4 class="font-headline-md text-headline-md mb-xs">Download</h4>
+          <p class="text-on-surface-variant text-sm">Retrieve your file in MP3, WAV, or FLAC formats with full metadata
+            and album art preserved.</p>
+        </div>
+      </div>
+    </section>
+    <!-- Recently Converted Section -->
+    <section id="historySection">
+      <div class="flex justify-between items-center mb-lg">
+        <h2 class="font-headline-md text-headline-md">Recently Extracted</h2>
+        <button id="clearHistoryBtn"
+          class="text-on-surface-variant font-label-caps text-label-caps hover:text-primary flex items-center gap-xs transition-colors">
+          CLEAR HISTORY
+          <span class="material-symbols-outlined text-sm" data-icon="delete_sweep">delete_sweep</span>
+        </button>
+      </div>
+      <div id="historyList" class="space-y-sm">
+        <!-- Dynamic history items will be injected here by script.js -->
+      </div>
+      <!-- Empty state -->
+      <div id="historyEmpty" class="flex flex-col items-center justify-center text-center px-lg py-xl hidden">
+        <div class="relative mb-lg">
+          <!-- Decorative Glow Behind Icon -->
+          <div class="absolute inset-0 bg-[#00b88f]/20 blur-3xl rounded-full scale-150"></div>
+          <!-- Empty State Illustration/Icon -->
+          <div class="relative w-40 h-40 flex items-center justify-center">
+            <img src="empty-state.png" alt="No extractions yet" class="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(0,229,176,0.25)] rounded-2xl" />
+          </div>
+        </div>
+        <h2 class="font-headline-md text-headline-md text-on-surface mb-sm">No extractions yet</h2>
+        <p class="font-body-main text-on-surface-variant max-w-[320px] mb-lg leading-relaxed">
+          Your cinematic audio library is waiting to be built. Paste a video link above to extract high-fidelity audio
+          stems.
+        </p>
+        <div class="flex flex-col items-center gap-xs">
+          <span class="material-symbols-outlined text-[#00b88f]/60 animate-bounce"
+            data-icon="arrow_upward">arrow_upward</span>
+          <span class="font-label-caps text-label-caps text-[#00b88f] tracking-widest">START HERE</span>
+        </div>
+      </div>
+    </section>
+    </div><!-- /youtube-panel -->
+
+    <!-- ══ Facebook Panel ══════════════════════════════ -->
+    <div id="facebook-panel" class="platform-panel hidden">
+      <!-- Facebook Hero -->
+      <section class="flex flex-col items-center text-center mb-xl">
+        <h1 class="font-display-lg text-display-lg mb-sm">Facebook Video Downloader</h1>
+        <p class="text-on-surface-variant max-w-2xl mb-lg">Download public videos from Facebook pages and profiles. High-quality MP4 with embedded metadata.</p>
+        <div class="w-full max-w-3xl glass-card p-sm rounded-xl flex flex-col md:flex-row items-stretch md:items-center gap-sm">
+          <div class="flex-grow flex items-center glass-input rounded-lg px-md py-3 w-full">
+            <span class="material-symbols-outlined text-outline-variant mr-3">link</span>
+            <input id="fbUrlInput" class="bg-transparent border-none focus:ring-0 w-full text-on-surface placeholder:text-[#E0E0E0] min-w-0" placeholder="Paste Facebook video URL here" type="text" />
+          </div>
+          <button id="fbFetchBtn" class="accent-gradient-btn px-lg py-3 rounded-lg font-label-caps text-label-caps text-white flex justify-center items-center gap-xs w-full md:w-auto flex-shrink-0">
+            FETCH VIDEO
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Facebook Error -->
+      <div id="fbErrorMsg" class="max-w-3xl mx-auto text-error text-center mb-md border border-error p-3 rounded-lg bg-[rgba(239,68,68,0.1)] hidden"></div>
+
+      <!-- Facebook Preview Card -->
+      <section id="fbPreviewCard" class="max-w-3xl mx-auto mb-xl hidden">
+        <div class="glass-card p-md rounded-xl flex flex-col md:flex-row items-center gap-md mb-4">
+          <img id="fbThumb" class="w-full md:w-48 rounded-lg object-cover" src="" />
+          <div class="flex-grow min-w-0 w-full">
+            <h5 id="fbTitle" class="font-bold truncate text-on-surface mb-1"></h5>
+            <p id="fbUploader" class="text-on-surface-variant text-sm mb-2"></p>
+            <span class="font-mono-data text-mono-data text-on-surface-variant flex items-center gap-xs">
+              <span class="material-symbols-outlined text-xs">schedule</span> <span id="fbDuration"></span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Facebook Download Options -->
+        <div class="glass-card p-md rounded-xl">
+          <div class="mb-md">
+            <p class="font-label-caps text-label-caps text-[#00b88f] mb-3">FORMAT</p>
+            <div id="fbFormatGrid" class="grid grid-cols-2 gap-2"></div>
+          </div>
+          <div class="mb-md">
+            <p class="font-label-caps text-label-caps text-[#00b88f] mb-3">QUALITY</p>
+            <div id="fbQualityGrid" class="flex flex-wrap gap-2"></div>
+          </div>
+          <button id="fbDownloadBtn" disabled class="w-full accent-gradient-btn py-3 rounded-lg font-label-caps text-label-caps text-white disabled:opacity-50 disabled:grayscale transition-all shadow-lg">
+            DOWNLOAD VIDEO
+          </button>
+          <button id="fbIdentifyAudioBtn" disabled class="w-full mt-3 py-3 rounded-lg font-label-caps text-label-caps text-[#00b88f] border border-[#00b88f]/30 bg-[#00b88f]/5 hover:bg-[#00b88f]/10 transition-all flex justify-center items-center gap-xs">
+            🎵 Identify Audio
+          </button>
+        </div>
+        <!-- Facebook Audio ID Result (populated by Step 5) -->
+        <div id="fbAudioResult" class="mt-4 hidden"></div>
+      </section>
+
+      <!-- Facebook Progress -->
+      <section id="fbProgressSection" class="max-w-3xl mx-auto mb-xl hidden">
+        <div class="glass-card p-md rounded-xl relative overflow-hidden">
+          <div class="flex justify-between items-end mb-xs">
+            <div class="flex items-center gap-4">
+              <img src="logo-icon.svg" alt="Progress" class="w-10 h-10" />
+              <div>
+                <p class="font-label-caps text-label-caps text-[#00e5b0] mb-1">FACEBOOK DOWNLOAD</p>
+                <h3 id="fbStatusText" class="font-headline-md text-headline-md">Initializing...</h3>
+              </div>
+            </div>
+            <span id="fbProgressPercent" class="font-mono-data text-mono-data text-[#00b88f]"></span>
+          </div>
+          <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+            <div id="fbProgressBar" class="h-full bg-[#009f7b] progress-pulse transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ══ Instagram Panel ═════════════════════════════ -->
+    <div id="instagram-panel" class="platform-panel hidden">
+      <!-- Instagram Hero -->
+      <section class="flex flex-col items-center text-center mb-xl">
+        <h1 class="font-display-lg text-display-lg mb-sm">Instagram Reel & Video Downloader</h1>
+        <p class="text-on-surface-variant max-w-2xl mb-lg">Download public Instagram reels, IGTV, and video posts. Grab any reel in seconds.</p>
+        <div class="w-full max-w-3xl glass-card p-sm rounded-xl flex flex-col md:flex-row items-stretch md:items-center gap-sm">
+          <div class="flex-grow flex items-center glass-input rounded-lg px-md py-3 w-full">
+            <span class="material-symbols-outlined text-outline-variant mr-3">link</span>
+            <input id="igUrlInput" class="bg-transparent border-none focus:ring-0 w-full text-on-surface placeholder:text-[#E0E0E0] min-w-0" placeholder="Paste Instagram reel or video URL here" type="text" />
+          </div>
+          <button id="igFetchBtn" class="accent-gradient-btn px-lg py-3 rounded-lg font-label-caps text-label-caps text-white flex justify-center items-center gap-xs w-full md:w-auto flex-shrink-0">
+            FETCH REEL
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Instagram Error -->
+      <div id="igErrorMsg" class="max-w-3xl mx-auto text-error text-center mb-md border border-error p-3 rounded-lg bg-[rgba(239,68,68,0.1)] hidden"></div>
+
+      <!-- Instagram Preview Card -->
+      <section id="igPreviewCard" class="max-w-3xl mx-auto mb-xl hidden">
+        <div class="glass-card p-md rounded-xl flex flex-col md:flex-row items-center gap-md mb-4">
+          <img id="igThumb" class="w-full md:w-48 rounded-lg object-cover" src="" />
+          <div class="flex-grow min-w-0 w-full">
+            <h5 id="igCaption" class="font-bold text-on-surface mb-1 line-clamp-2"></h5>
+            <p id="igUploader" class="text-on-surface-variant text-sm mb-2"></p>
+            <span class="font-mono-data text-mono-data text-on-surface-variant flex items-center gap-xs">
+              <span class="material-symbols-outlined text-xs">schedule</span> <span id="igDuration"></span>
+            </span>
+          </div>
+        </div>
+
+        <div class="glass-card p-md rounded-xl">
+          <button id="igDownloadBtn" class="w-full accent-gradient-btn py-3 rounded-lg font-label-caps text-label-caps text-white transition-all shadow-lg">
+            DOWNLOAD MP4
+          </button>
+          <button id="igIdentifyAudioBtn" disabled class="w-full mt-3 py-3 rounded-lg font-label-caps text-label-caps text-[#00b88f] border border-[#00b88f]/30 bg-[#00b88f]/5 hover:bg-[#00b88f]/10 transition-all flex justify-center items-center gap-xs">
+            🎵 Identify Audio
+          </button>
+        </div>
+        <!-- Instagram Audio ID Result (populated by Step 5) -->
+        <div id="igAudioResult" class="mt-4 hidden"></div>
+      </section>
+
+      <!-- Instagram Progress -->
+      <section id="igProgressSection" class="max-w-3xl mx-auto mb-xl hidden">
+        <div class="glass-card p-md rounded-xl relative overflow-hidden">
+          <div class="flex justify-between items-end mb-xs">
+            <div class="flex items-center gap-4">
+              <img src="logo-icon.svg" alt="Progress" class="w-10 h-10" />
+              <div>
+                <p class="font-label-caps text-label-caps text-[#00e5b0] mb-1">INSTAGRAM DOWNLOAD</p>
+                <h3 id="igStatusText" class="font-headline-md text-headline-md">Initializing...</h3>
+              </div>
+            </div>
+            <span id="igProgressPercent" class="font-mono-data text-mono-data text-[#00b88f]"></span>
+          </div>
+          <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+            <div id="igProgressBar" class="h-full bg-[#009f7b] progress-pulse transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ══ TikTok Panel ════════════════════════════════ -->
+    <div id="tiktok-panel" class="platform-panel hidden">
+      <!-- TikTok Hero -->
+      <section class="flex flex-col items-center text-center mb-xl">
+        <h1 class="font-display-lg text-display-lg mb-sm">TikTok Video Downloader</h1>
+        <p class="text-on-surface-variant max-w-2xl mb-lg">Download TikTok videos with or without watermark. Save trending content in high quality.</p>
+        <div class="w-full max-w-3xl glass-card p-sm rounded-xl flex flex-col md:flex-row items-stretch md:items-center gap-sm">
+          <div class="flex-grow flex items-center glass-input rounded-lg px-md py-3 w-full">
+            <span class="material-symbols-outlined text-outline-variant mr-3">link</span>
+            <input id="ttUrlInput" class="bg-transparent border-none focus:ring-0 w-full text-on-surface placeholder:text-[#E0E0E0] min-w-0" placeholder="Paste TikTok video URL here" type="text" />
+          </div>
+          <button id="ttFetchBtn" class="accent-gradient-btn px-lg py-3 rounded-lg font-label-caps text-label-caps text-white flex justify-center items-center gap-xs w-full md:w-auto flex-shrink-0">
+            FETCH VIDEO
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- TikTok Error -->
+      <div id="ttErrorMsg" class="max-w-3xl mx-auto text-error text-center mb-md border border-error p-3 rounded-lg bg-[rgba(239,68,68,0.1)] hidden"></div>
+
+      <!-- TikTok Preview Card -->
+      <section id="ttPreviewCard" class="max-w-3xl mx-auto mb-xl hidden">
+        <div class="glass-card p-md rounded-xl flex flex-col md:flex-row items-center gap-md mb-4">
+          <img id="ttThumb" class="w-full md:w-48 rounded-lg object-cover" src="" />
+          <div class="flex-grow min-w-0 w-full">
+            <h5 id="ttCaption" class="font-bold text-on-surface mb-1 line-clamp-2"></h5>
+            <p id="ttUploader" class="text-on-surface-variant text-sm mb-2"></p>
+            <div class="flex flex-wrap items-center gap-md">
+              <span class="font-mono-data text-mono-data text-on-surface-variant flex items-center gap-xs">
+                <span class="material-symbols-outlined text-xs">schedule</span> <span id="ttDuration"></span>
+              </span>
+              <span id="ttLikes" class="font-mono-data text-mono-data text-on-surface-variant flex items-center gap-xs hidden">
+                <span class="material-symbols-outlined text-xs">favorite</span> <span id="ttLikeCount"></span>
+              </span>
+              <span id="ttViews" class="font-mono-data text-mono-data text-on-surface-variant flex items-center gap-xs hidden">
+                <span class="material-symbols-outlined text-xs">visibility</span> <span id="ttViewCount"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card p-md rounded-xl">
+          <p class="font-label-caps text-label-caps text-[#00b88f] mb-3">DOWNLOAD OPTIONS</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+            <button id="ttDownloadNoWM" class="accent-gradient-btn py-3 rounded-lg font-label-caps text-label-caps text-white flex justify-center items-center gap-xs transition-all shadow-lg">
+              ✅ Without Watermark
+            </button>
+            <button id="ttDownloadWM" class="py-3 rounded-lg font-label-caps text-label-caps text-on-surface-variant border border-white/15 bg-white/3 hover:bg-white/8 flex justify-center items-center gap-xs transition-all">
+              📌 With Watermark
+            </button>
+          </div>
+          <button id="ttIdentifyAudioBtn" disabled class="w-full py-3 rounded-lg font-label-caps text-label-caps text-[#00b88f] border border-[#00b88f]/30 bg-[#00b88f]/5 hover:bg-[#00b88f]/10 transition-all flex justify-center items-center gap-xs">
+            🎵 Identify Audio
+          </button>
+        </div>
+        <!-- TikTok Audio ID Result (populated by Step 5) -->
+        <div id="ttAudioResult" class="mt-4 hidden"></div>
+      </section>
+
+      <!-- TikTok Progress -->
+      <section id="ttProgressSection" class="max-w-3xl mx-auto mb-xl hidden">
+        <div class="glass-card p-md rounded-xl relative overflow-hidden">
+          <div class="flex justify-between items-end mb-xs">
+            <div class="flex items-center gap-4">
+              <img src="logo-icon.svg" alt="Progress" class="w-10 h-10" />
+              <div>
+                <p class="font-label-caps text-label-caps text-[#00e5b0] mb-1">TIKTOK DOWNLOAD</p>
+                <h3 id="ttStatusText" class="font-headline-md text-headline-md">Initializing...</h3>
+              </div>
+            </div>
+            <span id="ttProgressPercent" class="font-mono-data text-mono-data text-[#00b88f]"></span>
+          </div>
+          <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+            <div id="ttProgressBar" class="h-full bg-[#009f7b] progress-pulse transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+  <!-- Footer -->
+  <footer
+    class="w-full py-xl pb-[100px] md:pb-xl px-gutter flex flex-col md:flex-row justify-between items-center gap-sm bg-surface-container-lowest border-t border-white/5">
+    <div class="flex items-center justify-center md:justify-start">
+      <img src="logo-full.svg" alt="SonicExtract" class="h-7 sm:h-8 w-auto object-contain" />
+    </div>
+    <p class="font-label-caps text-label-caps text-[#008567] text-center md:text-left">© 2024 SONICEXTRACT, POWERED BY NEXUSGRID TECHNOLOGIES.</p>
+    <div class="flex gap-md">
+      <a class="font-sans text-sm text-gray-500 hover:text-[#00b88f] transition-colors"
+        href="#">Terms</a>
+      <a class="font-sans text-sm text-gray-500 hover:text-[#00b88f] transition-colors"
+        href="#">Privacy</a>
+      <a class="font-sans text-sm text-gray-500 hover:text-[#00b88f] transition-colors"
+        href="#">API Documentation</a>
+    </div>
+  </footer>
+
+  <!-- BottomNavBar for Mobile -->
+  <nav class="md:hidden fixed bottom-4 left-0 right-0 z-50 flex justify-around items-center h-20 px-sm">
+    <div
+      class="bg-surface-container-low/70 backdrop-blur-[30px] w-full max-w-[500px] rounded-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] flex justify-around items-center h-20">
+      <!-- Active Item: Extract -->
+      <div
+        class="flex flex-col items-center justify-center text-[#00b88f] drop-shadow-[0_0_8px_rgba(0,184,143,0.5)] active:scale-90 transition-all duration-300 cursor-pointer">
+        <span class="material-symbols-outlined" data-icon="graphic_eq"
+          style="font-variation-settings: 'FILL' 1;">graphic_eq</span>
+        <span class="font-label-caps text-label-caps mt-1">Extract</span>
+      </div>
+      <!-- Inactive Item: Library -->
+      <div
+        class="flex flex-col items-center justify-center text-outline opacity-60 hover:text-[#00b88f] transition-colors active:scale-90 duration-300 cursor-pointer"
+        onclick="document.getElementById('historySection').scrollIntoView({behavior: 'smooth'})">
+        <span class="material-symbols-outlined" data-icon="library_music">library_music</span>
+        <span class="font-label-caps text-label-caps mt-1">Library</span>
+      </div>
+    </div>
+  </nav>
+
+  <script src="script.js?v=2"></script>
+</body>
+
+</html>
