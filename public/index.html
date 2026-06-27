@@ -5,12 +5,12 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>SonicExtract</title>
+  <title>SonicExtracts</title>
   <link rel="icon" type="image/png" href="favicon.png" />
   <link href="style.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Geist:wght@400;600&amp;display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap"
     rel="stylesheet" />
   <link
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
@@ -89,8 +89,8 @@
             "md": "1.5rem"
           },
           "fontFamily": {
-            "label-caps": ["Geist"],
-            "mono-data": ["Geist"],
+            "label-caps": ["Inter"],
+            "mono-data": ["Inter"],
             "display-lg": ["Inter"],
             "headline-md": ["Inter"],
             "body-main": ["Inter"]
@@ -320,23 +320,38 @@
     <div class="blob-1"></div>
     <div class="blob-2"></div>
   </div>
-  <!-- Top Navigation -->
+  <!-- Top Navigation (Floating Header) -->
   <header
-    class="fixed top-0 w-full z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20_rgba(0,112,255,0.1)]">
-    <nav
-      class="max-w-container-max mx-auto px-gutter py-4 flex flex-col md:flex-row justify-between items-center gap-sm md:gap-0">
-      <div class="flex items-center w-full justify-center md:w-auto md:justify-start">
-        <img src="logo-full.svg" alt="SonicExtract" class="h-8 sm:h-10 w-auto object-contain" />
-      </div>
-      <div class="flex items-center gap-sm md:gap-lg flex-wrap justify-center">
-        <!-- NexusGrid Seal -->
-        <div class="flex items-center gap-2 bg-surface-container-high/50 px-3 py-1.5 rounded-full border border-[#00b88f]/30 shadow-[0_0_15px_rgba(0,184,143,0.2)]">
-          <img src="nexusgrid-logo.png" alt="NexusGrid Logo" class="w-5 h-5 object-contain" />
-          <div class="flex flex-col">
-            <span class="text-[8px] font-bold tracking-widest text-[#00b88f]/80 leading-none mb-[2px]">POWERED BY</span>
-            <span class="text-[12px] font-bold tracking-widest text-[#00b88f] leading-none">NEXUSGRID</span>
+    class="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-container-max z-50 bg-surface-container/75 dark:bg-surface-container/75 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-full shadow-[0_12px_40px_rgba(0,0,0,0.5)] py-3 px-4 sm:px-gutter transition-all duration-300">
+    <nav class="w-full flex flex-wrap md:flex-nowrap md:grid md:grid-cols-3 justify-between items-center gap-y-2 md:gap-0">
+      <!-- Left: NexusGrid Badge (Accessible Link) -->
+      <div class="w-auto order-2 md:order-1 flex justify-start">
+        <a href="https://nexusgrid.tech" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-surface-container-high/40 px-2.5 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full border border-[#00b88f]/20 hover:border-[#00b88f]/50 hover:bg-surface-container-high/60 active:scale-95 transition-all duration-300 cursor-pointer select-none">
+          <img src="nexusgrid-logo.png" alt="NexusGrid Logo" class="w-4 h-4 sm:w-5 sm:h-5 object-contain" />
+          <div class="flex flex-col text-left font-sans">
+            <span class="text-[7px] sm:text-[8px] font-bold tracking-widest text-[#00b88f]/80 leading-none mb-[2px]">POWERED BY</span>
+            <span class="text-[9px] sm:text-[11px] font-bold tracking-widest text-[#00b88f] leading-none">NEXUSGRIDTECH</span>
           </div>
-        </div>
+        </a>
+      </div>
+
+      <!-- Center: SonicExtracts Logo (HTML with Live Retro Animation) -->
+      <div class="w-full md:w-auto order-1 md:order-2 flex justify-center items-center gap-2 mb-1.5 md:mb-0 select-none">
+        <img src="logo-icon.svg" alt="SonicExtracts" class="h-6 sm:h-7 w-auto object-contain" />
+        <span class="font-sans text-base sm:text-lg font-bold tracking-[0.12em] text-white retro-live-text">SONICEXTRACTS</span>
+      </div>
+
+      <!-- Right: Developed by @sheronrandev (Accessible Link) -->
+      <div class="w-auto order-3 md:order-3 flex justify-end">
+        <a href="https://github.com/sheronrandev" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-surface-container-high/40 px-2.5 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full border border-[#00b88f]/20 hover:border-[#00b88f]/50 hover:bg-surface-container-high/60 active:scale-95 transition-all duration-300 cursor-pointer select-none">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#00b88f]" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+          </svg>
+          <div class="flex flex-col text-left font-sans">
+            <span class="text-[7px] sm:text-[8px] font-bold tracking-widest text-[#00b88f]/80 leading-none mb-[2px]">DEVELOPED BY</span>
+            <span class="text-[9px] sm:text-[11px] font-bold tracking-widest text-[#00b88f] leading-none">@SHERONRANDEV</span>
+          </div>
+        </a>
       </div>
     </nav>
   </header>
@@ -344,19 +359,38 @@
     <!-- Platform Tab Bar -->
     <nav class="platform-tab-bar" aria-label="Platform selector">
       <button class="platform-tab active" data-platform="youtube" onclick="switchTab('youtube')">
-        <span class="tab-icon">▶️</span>
+        <span class="tab-icon">
+          <svg class="tab-svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
+            <polygon points="10 15 15 12 10 9" fill="currentColor"/>
+          </svg>
+        </span>
         <span class="tab-label">YouTube</span>
       </button>
       <button class="platform-tab" data-platform="facebook" onclick="switchTab('facebook')">
-        <span class="tab-icon">📘</span>
+        <span class="tab-icon">
+          <svg class="tab-svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+          </svg>
+        </span>
         <span class="tab-label">Facebook</span>
       </button>
       <button class="platform-tab" data-platform="instagram" onclick="switchTab('instagram')">
-        <span class="tab-icon">📸</span>
+        <span class="tab-icon">
+          <svg class="tab-svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+          </svg>
+        </span>
         <span class="tab-label">Instagram</span>
       </button>
       <button class="platform-tab" data-platform="tiktok" onclick="switchTab('tiktok')">
-        <span class="tab-icon">🎵</span>
+        <span class="tab-icon">
+          <svg class="tab-svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+          </svg>
+        </span>
         <span class="tab-label">TikTok</span>
       </button>
     </nav>
@@ -812,19 +846,17 @@
   </main>
   <!-- Footer -->
   <footer
-    class="w-full py-xl pb-[100px] md:pb-xl px-gutter flex flex-col md:flex-row justify-between items-center gap-sm bg-surface-container-lowest border-t border-white/5">
-    <div class="flex items-center justify-center md:justify-start">
-      <img src="logo-full.svg" alt="SonicExtract" class="h-7 sm:h-8 w-auto object-contain" />
+    class="w-full py-xl pb-[100px] md:pb-xl px-gutter flex flex-col justify-center items-center gap-sm bg-surface-container-lowest border-t border-white/5 text-center">
+    <div class="flex items-center justify-center gap-2 select-none mb-1">
+      <img src="logo-icon.svg" alt="SonicExtracts Logo" class="h-5.5 sm:h-6.5 w-auto object-contain" />
+      <span class="font-sans text-base sm:text-lg font-bold tracking-[0.12em] text-white retro-live-text">SONICEXTRACTS</span>
     </div>
-    <p class="font-label-caps text-label-caps text-[#008567] text-center md:text-left">© 2024 SONICEXTRACT, POWERED BY NEXUSGRID TECHNOLOGIES.</p>
-    <div class="flex gap-md">
-      <a class="font-sans text-sm text-gray-500 hover:text-[#00b88f] transition-colors"
-        href="#">Terms</a>
-      <a class="font-sans text-sm text-gray-500 hover:text-[#00b88f] transition-colors"
-        href="#">Privacy</a>
-      <a class="font-sans text-sm text-gray-500 hover:text-[#00b88f] transition-colors"
-        href="#">API Documentation</a>
-    </div>
+    <p class="font-label-caps text-label-caps text-[#008567] leading-relaxed max-w-2xl">
+      © 2026 SONICEXTRACTS. DEVELOPED BY 
+      <a href="https://github.com/sheronrandev" target="_blank" rel="noopener noreferrer" class="text-[#00b88f] hover:text-[#00e5b0] hover:underline font-bold transition-colors">@SHERONRANDEV</a>. 
+      POWERED BY <a href="https://nexusgrid.tech" target="_blank" rel="noopener noreferrer" class="text-[#00b88f] hover:text-[#00e5b0] hover:underline font-bold transition-colors">NEXUSGRID TECH</a>. 
+      ALL RIGHTS RESERVED.
+    </p>
   </footer>
 
   <!-- BottomNavBar for Mobile -->

@@ -116,7 +116,7 @@ body {
 }
 
 .seal-powered {
-  font-family: 'Geist', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 7px;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -126,7 +126,7 @@ body {
 }
 
 .seal-name {
-  font-family: 'Geist', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -142,7 +142,7 @@ body {
   border-radius: 999px;
   background: rgba(0,184,143,0.08);
   border: 1px solid rgba(0,184,143,0.2);
-  font-family: 'Geist', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -189,7 +189,7 @@ body {
   border: none;
   background: linear-gradient(135deg, #00b88f 0%, #008567 100%);
   color: #fff;
-  font-family: 'Geist', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -292,7 +292,7 @@ body {
 }
 
 .workflow-step-num {
-  font-family: 'Geist', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -489,35 +489,147 @@ body {
 .platform-tab {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   padding: 10px 18px;
   border-radius: 10px;
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
   color: #6b7089;
-  font-family: 'Geist', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   white-space: nowrap;
 }
 
-.platform-tab:hover {
-  color: #e4e6f0;
-  background: rgba(255,255,255,0.05);
-}
-
-.platform-tab.active {
-  color: #fff;
-  background: linear-gradient(135deg, #00b88f 0%, #008567 100%);
-  box-shadow: 0 0 20px rgba(0,184,143,0.25);
-}
-
 .platform-tab .tab-icon {
-  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
+}
+
+.tab-svg-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  stroke: currentColor;
+  stroke-width: 2.2px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transform-origin: center;
+}
+
+.tab-svg-icon path,
+.tab-svg-icon rect,
+.tab-svg-icon line {
+  fill: none !important;
+}
+
+.tab-svg-icon polygon,
+.tab-svg-icon circle {
+  fill: currentColor;
+}
+
+/* ── Hover Animations (Desktop View via hover media query) ── */
+@media (hover: hover) {
+  .platform-tab:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+  
+  /* YouTube Hover */
+  .platform-tab[data-platform="youtube"]:hover {
+    color: #ff3333;
+    background: rgba(255, 51, 51, 0.05);
+    border-color: rgba(255, 51, 51, 0.15);
+  }
+  .platform-tab[data-platform="youtube"]:hover .tab-svg-icon {
+    filter: drop-shadow(0 0 6px rgba(255, 51, 51, 0.5));
+    animation: ytPlayPulse 1.2s infinite ease-in-out;
+  }
+  
+  /* Facebook Hover */
+  .platform-tab[data-platform="facebook"]:hover {
+    color: #1877f2;
+    background: rgba(24, 119, 242, 0.05);
+    border-color: rgba(24, 119, 242, 0.15);
+  }
+  .platform-tab[data-platform="facebook"]:hover .tab-svg-icon {
+    filter: drop-shadow(0 0 6px rgba(24, 119, 242, 0.5));
+    animation: fbRotate 1.2s infinite ease-in-out;
+  }
+  
+  /* Instagram Hover */
+  .platform-tab[data-platform="instagram"]:hover {
+    color: #f75274;
+    background: rgba(247, 82, 116, 0.05);
+    border-color: rgba(247, 82, 116, 0.15);
+  }
+  .platform-tab[data-platform="instagram"]:hover .tab-svg-icon {
+    filter: drop-shadow(0 0 6px rgba(247, 82, 116, 0.5));
+    animation: igLensPulse 1.2s infinite ease-in-out;
+  }
+  
+  /* TikTok Hover */
+  .platform-tab[data-platform="tiktok"]:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .platform-tab[data-platform="tiktok"]:hover .tab-svg-icon {
+    filter: drop-shadow(-1.5px -1.5px 0px #ff0050) drop-shadow(1.5px 1.5px 0px #00f2fe);
+    animation: ttWiggle 0.8s infinite ease-in-out;
+  }
+}
+
+/* ── Active / Selected Animation (Both PC & Mobile) ── */
+.platform-tab.active {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #00b88f 0%, #008567 100%) !important;
+  box-shadow: 0 0 20px rgba(0, 184, 143, 0.3) !important;
+  border-color: transparent !important;
+}
+
+.platform-tab.active .tab-svg-icon {
+  animation: tabSelectPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  color: #ffffff !important;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+}
+
+.platform-tab[data-platform="tiktok"].active .tab-svg-icon {
+  filter: drop-shadow(-1px -1px 0px #ff0050) drop-shadow(1px 1px 0px #00f2fe) drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+}
+
+/* ── Animation Keyframes ── */
+@keyframes ytPlayPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+
+@keyframes fbRotate {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}
+
+@keyframes igLensPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08) rotate(5deg); }
+}
+
+@keyframes ttWiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-12deg) scale(1.08); }
+  75% { transform: rotate(12deg) scale(1.08); }
+}
+
+@keyframes tabSelectPop {
+  0% { transform: scale(0.6); opacity: 0.5; }
+  50% { transform: scale(1.3) rotate(-6deg); }
+  75% { transform: scale(0.92) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
 /* ── Coming Soon Panel ─────────────────────────── */
@@ -545,7 +657,7 @@ body {
   border-radius: 999px;
   background: rgba(0,184,143,0.08);
   border: 1px solid rgba(0,184,143,0.2);
-  font-family: 'Geist', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -567,14 +679,50 @@ body {
 /* ── Responsive Tab Bar ────────────────────────── */
 @media (max-width: 640px) {
   .platform-tab {
-    padding: 8px 12px;
-    font-size: 11px;
-    gap: 4px;
+    padding: 10px 14px;
+    gap: 0;
   }
   .platform-tab .tab-label {
     display: none;
   }
-  .platform-tab .tab-icon {
-    font-size: 20px;
+  .tab-svg-icon {
+    width: 22px;
+    height: 22px;
   }
+}
+
+/* ── Retro Live Text Animation ───────────────────── */
+@keyframes retroLiveGlow {
+  0%, 100% {
+    color: #ffffff;
+    text-shadow: 
+      0 0 4px rgba(0, 184, 143, 0.4),
+      0 0 10px rgba(0, 184, 143, 0.2);
+  }
+  50% {
+    color: #00e5b0;
+    text-shadow: 
+      0 0 8px rgba(0, 229, 176, 0.8),
+      0 0 20px rgba(0, 229, 176, 0.4),
+      0 0 30px rgba(0, 229, 176, 0.2);
+  }
+  /* Subtle analog CRT terminal flickers */
+  45%, 47% {
+    opacity: 1;
+  }
+  46% {
+    opacity: 0.94;
+  }
+  92%, 94% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.96;
+  }
+}
+
+.retro-live-text {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  animation: retroLiveGlow 4s infinite ease-in-out;
+  letter-spacing: 0.12em;
 }
